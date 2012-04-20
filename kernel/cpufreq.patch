@@ -1,0 +1,37 @@
+From a934de5b97afd72801db6507aaeeebe2e7323e1e Mon Sep 17 00:00:00 2001
+From: Keiran Collins <keiran@darkforestgroup.com>
+Date: Sun, 8 Apr 2012 11:07:21 +0100
+Subject: [PATCH] cpufreq: Export scaling_available_frequencies attr in /sys
+
+---
+ arch/arm/mach-msm/cpufreq.c |    7 ++++++-
+ 1 files changed, 6 insertions(+), 1 deletions(-)
+
+diff --git a/arch/arm/mach-msm/cpufreq.c b/arch/arm/mach-msm/cpufreq.c
+index 35ef5d4..25fa812 100644
+--- a/arch/arm/mach-msm/cpufreq.c
++++ b/arch/arm/mach-msm/cpufreq.c
+@@ -204,6 +204,11 @@ static int __cpuinit msm_cpufreq_init(struct cpufreq_policy *policy)
+ 	return 0;
+ }
+ 
++static struct freq_attr *msm_cpufreq_attr[] = {  
++        &cpufreq_freq_attr_scaling_available_freqs,  
++        NULL,
++};  
++
+ static struct cpufreq_driver msm_cpufreq_driver = {
+ 	/* lps calculations are handled here. */
+ 	.flags		= CPUFREQ_STICKY | CPUFREQ_CONST_LOOPS,
+@@ -211,7 +216,7 @@ static int __cpuinit msm_cpufreq_init(struct cpufreq_policy *policy)
+ 	.verify		= msm_cpufreq_verify,
+ 	.target		= msm_cpufreq_target,
+ 	.name		= "msm",
+-	.attr		= NULL,
++	.attr		= msm_cpufreq_attr,
+ };
+ 
+ static int __init msm_cpufreq_register(void)
+-- 
+1.7.5.4
+
